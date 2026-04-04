@@ -1,413 +1,658 @@
-import React, { useState } from 'react';
-import { ChevronRight, Phone, Mail, MapPin, Heart, Search, Check, Zap, TrendingUp } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autodealz - Used Cars for Sale Near You | Best Deals</title>
+    <meta name="description" content="Find affordable used cars near you. Browse certified pre-owned inventory, get instant financing quotes, and schedule test drives. Same-day delivery available.">
+    <meta name="keywords" content="used cars near me, pre-owned vehicles, certified used cars, bad credit auto financing">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-const AutodealzWebsite = () => {
-  const [selectedCar, setSelectedCar] = useState(null);
-  const [filterPrice, setFilterPrice] = useState(30000);
-  const [formData, setFormData] = useState({ name: '', phone: '', email: '', interestedCar: '' });
-  const [activeTab, setActiveTab] = useState('all');
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9fafb;
+        }
 
-  // Sample inventory - YOU'LL UPDATE THIS WITH REAL LISTINGS
-  const inventory = [
-    {
-      id: 1,
-      make: 'Honda',
-      model: 'Civic',
-      year: 2021,
-      price: 14995,
-      mileage: 45000,
-      image: '🚗',
-      badge: 'Hot Deal',
-      type: 'sedan',
-      description: '45k miles, Clean title, Recently serviced',
-      keywords: 'used Honda Civic for sale near Miami, reliable sedan'
-    },
-    {
-      id: 2,
-      make: 'Toyota',
-      model: 'CR-V',
-      year: 2020,
-      price: 19999,
-      mileage: 52000,
-      image: '🚙',
-      badge: 'Certified',
-      type: 'suv',
-      description: '52k miles, All-wheel drive, Bluetooth & backup camera',
-      keywords: 'used Toyota CR-V near me, affordable SUV'
-    },
-    {
-      id: 3,
-      make: 'Ford',
-      model: 'F-150',
-      year: 2019,
-      price: 22500,
-      mileage: 68000,
-      image: '🚐',
-      badge: 'Popular',
-      type: 'truck',
-      description: '68k miles, Towing package, Extended cab',
-      keywords: 'used Ford truck for sale, pickup truck deals'
-    },
-    {
-      id: 4,
-      make: 'Chevy',
-      model: 'Malibu',
-      year: 2022,
-      price: 16500,
-      mileage: 38000,
-      image: '🚗',
-      badge: 'New Stock',
-      type: 'sedan',
-      description: '38k miles, One owner, Full service history',
-      keywords: 'cheap used cars under $20k, Chevy sedan deals'
-    },
-    {
-      id: 5,
-      make: 'Mazda',
-      model: 'CX-5',
-      year: 2020,
-      price: 18995,
-      mileage: 55000,
-      image: '🚙',
-      badge: 'Great Value',
-      type: 'suv',
-      description: '55k miles, Excellent fuel economy, Tech package',
-      keywords: 'used SUV near me, affordable crossover'
-    },
-    {
-      id: 6,
-      make: 'Hyundai',
-      model: 'Elantra',
-      year: 2023,
-      price: 13995,
-      mileage: 22000,
-      image: '🚗',
-      badge: 'Low Mileage',
-      type: 'sedan',
-      description: '22k miles, Warranty included, Like new condition',
-      keywords: 'used cars under $15k, low mileage sedan'
-    },
-  ];
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-  // Filter logic
-  const filteredCars = inventory.filter(car => {
-    const priceMatch = car.price <= filterPrice;
-    const typeMatch = activeTab === 'all' || car.type === activeTab;
-    return priceMatch && typeMatch;
-  });
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 100%);
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+        }
 
-  // Form handler
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Lead captured:', formData);
-    alert(`✅ Thanks ${formData.name}! We'll contact you soon at ${formData.phone}`);
-    setFormData({ name: '', phone: '', email: '', interestedCar: '' });
-  };
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
 
-  return (
-    <div className="min-h-screen bg-white font-sans">
-      {/* ===== HEADER ===== */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-            🚗 AUTODEALZ
-          </div>
-          <div className="flex gap-4 items-center">
-            <a href="#inventory" className="text-gray-700 hover:text-blue-600 font-medium">Inventory</a>
-            <a href="#forms" className="text-gray-700 hover:text-blue-600 font-medium">Get Approved</a>
-            <div className="flex items-center gap-2 text-sm text-gray-700">
-              <Phone size={18} />
-              <span className="font-bold">(305) 555-CARS</span>
-            </div>
-          </div>
-        </div>
-      </header>
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
 
-      {/* ===== HERO SECTION (MOST IMPORTANT) ===== */}
-      <section className="bg-gradient-to-br from-blue-700 via-blue-600 to-blue-800 text-white py-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-4">Find Your Perfect Car Today</h1>
-          <p className="text-xl text-blue-100 mb-8">
-            Pre-owned cars under $20k • No hidden fees • Financing available
-          </p>
-          
-          {/* HERO CTA BUTTONS */}
-          <div className="flex justify-center gap-4 mb-10">
-            <button className="bg-red-500 hover:bg-red-600 text-white px-8 py-4 rounded-lg font-bold text-lg flex items-center gap-2 transition">
-              Browse Inventory <ChevronRight size={24} />
+        .btn-primary {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #e55a28;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 107, 53, 0.2);
+            color: white;
+            border: 2px solid #ff6b35;
+            padding: 10px 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 107, 53, 0.3);
+        }
+
+        /* Trust Signals */
+        .trust-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 50px 20px;
+            background: #f3f4f6;
+        }
+
+        .trust-item {
+            text-align: center;
+        }
+
+        .trust-item h3 {
+            font-size: 18px;
+            font-weight: 500;
+            margin: 15px 0 8px 0;
+        }
+
+        .trust-item p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .icon {
+            font-size: 40px;
+            margin: 0 auto 15px;
+        }
+
+        /* Search Section */
+        .search-section {
+            padding: 60px 20px;
+        }
+
+        .search-section h2 {
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .search-filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            background: #f3f4f6;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .search-btn {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .search-btn:hover {
+            background: #e55a28;
+        }
+
+        /* Vehicle Grid */
+        .vehicle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .vehicle-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .vehicle-image {
+            background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 100%);
+            padding: 40px;
+            font-size: 80px;
+            text-align: center;
+            position: relative;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vehicle-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff6b35;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .vehicle-details {
+            padding: 20px;
+        }
+
+        .vehicle-details h3 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .vehicle-specs {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .vehicle-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 15px;
+        }
+
+        .vehicle-price {
+            font-size: 20px;
+            font-weight: 500;
+            color: #ff6b35;
+        }
+
+        .btn-interest {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .btn-interest:hover {
+            background: #e55a28;
+        }
+
+        /* Lead Forms Section */
+        .lead-section {
+            background: #f3f4f6;
+            padding: 60px 20px;
+        }
+
+        .lead-section h2 {
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .lead-section > p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .form-tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .tab-btn {
+            background: white;
+            color: #333;
+            border: 2px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: #ff6b35;
+            color: white;
+            border-color: #ff6b35;
+        }
+
+        .tab-btn:hover {
+            border-color: #ff6b35;
+        }
+
+        .lead-form {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+        }
+
+        .form-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .form-submit {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .form-submit:hover {
+            background: #e55a28;
+        }
+
+        .success-message {
+            margin-top: 15px;
+            color: #10b981;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Footer CTA */
+        .footer-cta {
+            background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .footer-cta h2 {
+            font-size: 28px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .footer-cta p {
+            font-size: 16px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .footer-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .search-section h2 {
+                font-size: 24px;
+            }
+
+            .vehicle-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Find Your Perfect Car Today</h1>
+            <p>Pre-owned vehicles at unbeatable prices near you. Browse, compare, and schedule your test drive in minutes.</p>
+            <button class="btn-primary" onclick="document.getElementById('search').scrollIntoView({ behavior: 'smooth' })">
+                View Inventory Now
             </button>
-            <button className="bg-white text-blue-700 hover:bg-gray-100 px-8 py-4 rounded-lg font-bold text-lg transition">
-              Get Pre-Approved Now
-            </button>
-          </div>
+        </div>
+    </section>
 
-          {/* QUICK SEARCH BAR */}
-          <div className="bg-white rounded-lg p-6 shadow-2xl max-w-3xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <input type="text" placeholder="Make (Honda, Toyota...)" className="px-4 py-3 border border-gray-300 rounded-lg text-gray-800" />
-              <input type="text" placeholder="Model" className="px-4 py-3 border border-gray-300 rounded-lg text-gray-800" />
-              <input type="number" placeholder="Max price" className="px-4 py-3 border border-gray-300 rounded-lg text-gray-800" />
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold flex items-center justify-center gap-2 transition">
-                <Search size={20} /> Search
-              </button>
+    <!-- Trust Signals -->
+    <section class="trust-section">
+        <div class="container" style="display: contents;">
+            <div class="trust-item">
+                <div class="icon">🛡️</div>
+                <h3>100% Verified Inspection</h3>
+                <p>Every vehicle thoroughly checked by certified mechanics</p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== TRUST SECTION (Social Proof) ===== */}
-      <section className="bg-gray-50 py-12 px-4 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto grid grid-cols-3 gap-8 text-center">
-          <div>
-            <div className="text-3xl font-bold text-blue-600">500+</div>
-            <p className="text-gray-700 mt-2">Cars Sold This Year</p>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-blue-600">4.8★</div>
-            <p className="text-gray-700 mt-2">Customer Rating</p>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-blue-600">10+ Years</div>
-            <p className="text-gray-700 mt-2">Trusted Dealer</p>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== WHY CHOOSE US ===== */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12">Why Choose Autodealz?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {[
-              { icon: Check, title: '30-Day Warranty', desc: 'Peace of mind on every purchase' },
-              { icon: TrendingUp, title: 'Best Prices', desc: 'Competitive rates, guaranteed' },
-              { icon: Zap, title: 'Fast Financing', desc: 'Get approved in minutes' },
-              { icon: Phone, title: '24/7 Support', desc: 'Always here to help' },
-            ].map((item, idx) => (
-              <div key={idx} className="bg-gradient-to-br from-blue-50 to-gray-50 p-6 rounded-lg border border-blue-100 text-center">
-                <item.icon className="text-blue-600 mx-auto mb-4" size={32} />
-                <h3 className="font-bold text-lg mb-2">{item.title}</h3>
-                <p className="text-gray-600 text-sm">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== INVENTORY SECTION (MAIN CONVERSION TOOL) ===== */}
-      <section id="inventory" className="py-16 px-4 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold mb-4">Featured Inventory</h2>
-          <p className="text-gray-600 mb-8">Updated daily • All prices include 30-day warranty</p>
-
-          {/* FILTER TABS */}
-          <div className="flex gap-4 mb-8 overflow-x-auto pb-2">
-            {['all', 'sedan', 'suv', 'truck'].map(type => (
-              <button
-                key={type}
-                onClick={() => setActiveTab(type)}
-                className={`px-6 py-3 rounded-full font-bold transition whitespace-nowrap ${
-                  activeTab === type
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-blue-600'
-                }`}
-              >
-                {type === 'all' ? '🚗 All Cars' : type === 'sedan' ? '🚗 Sedans' : type === 'suv' ? '🚙 SUVs' : '🚐 Trucks'}
-              </button>
-            ))}
-          </div>
-
-          {/* PRICE FILTER */}
-          <div className="bg-white p-6 rounded-lg mb-8 border border-gray-200">
-            <label className="block font-bold mb-4">Max Price: ${filterPrice.toLocaleString()}</label>
-            <input
-              type="range"
-              min={5000}
-              max={50000}
-              step={1000}
-              value={filterPrice}
-              onChange={(e) => setFilterPrice(Number(e.target.value))}
-              className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer"
-            />
-            <div className="flex justify-between text-sm text-gray-600 mt-2">
-              <span>$5k</span>
-              <span>$50k</span>
+            <div class="trust-item">
+                <div class="icon">⚡</div>
+                <h3>Fast Approval</h3>
+                <p>Get instant financing quotes even with bad credit</p>
             </div>
-          </div>
+            <div class="trust-item">
+                <div class="icon">🕐</div>
+                <h3>Same Day Delivery</h3>
+                <p>Drive your new car home the same day you buy</p>
+            </div>
+        </div>
+    </section>
 
-          {/* CAR GRID */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCars.map(car => (
-              <div
-                key={car.id}
-                onClick={() => setSelectedCar(car)}
-                className="bg-white rounded-lg shadow-md hover:shadow-xl transition cursor-pointer border-2 border-transparent hover:border-blue-400"
-              >
-                {/* CAR IMAGE */}
-                <div className="relative bg-gradient-to-br from-gray-200 to-gray-300 h-48 flex items-center justify-center text-8xl">
-                  {car.image}
-                  <div className="absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-full text-xs font-bold">
-                    {car.badge}
-                  </div>
+    <!-- Search Section -->
+    <section id="search" class="search-section">
+        <div class="container">
+            <h2>Search Used Cars Near You</h2>
+            
+            <div class="search-filters">
+                <input type="number" id="priceMin" placeholder="Min Price">
+                <input type="number" id="priceMax" placeholder="Max Price">
+                <input type="text" id="make" placeholder="Make (Honda, Toyota...)">
+                <input type="text" id="model" placeholder="Model (Civic, Accord...)">
+                <input type="number" id="mileage" placeholder="Max Mileage">
+                <button class="search-btn" onclick="filterVehicles()">🔍 Search</button>
+            </div>
+
+            <!-- Vehicle Grid -->
+            <div class="vehicle-grid" id="vehicleGrid">
+                <!-- Vehicles will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Lead Capture Section -->
+    <section id="leadForm" class="lead-section">
+        <div class="container">
+            <h2>Get Your Best Offer</h2>
+            <p>Choose how you want to connect with us</p>
+
+            <div class="form-tabs">
+                <button class="tab-btn active" onclick="switchForm('contact')">📞 Quick Contact</button>
+                <button class="tab-btn" onclick="switchForm('quote')">⚡ Get Price Quote</button>
+                <button class="tab-btn" onclick="switchForm('tradeIn')">🛡️ Trade-In Value</button>
+                <button class="tab-btn" onclick="switchForm('appointment')">🕐 Schedule Test Drive</button>
+            </div>
+
+            <form class="lead-form" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Full Name" required>
+                    <input type="tel" id="phone" placeholder="Phone Number" required>
+                    <input type="email" id="email" placeholder="Email Address" required>
                 </div>
+                <button type="submit" class="form-submit">Send My Information</button>
+                <div class="success-message" id="successMsg">✓ Thanks! We'll contact you within 1 hour.</div>
+            </form>
+        </div>
+    </section>
 
-                {/* CAR DETAILS */}
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                    {car.year} {car.make} {car.model}
-                  </h3>
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-3xl font-bold text-blue-600">
-                      ${car.price.toLocaleString()}
-                    </span>
-                    <Heart className="text-gray-400 hover:text-red-500 cursor-pointer transition" />
-                  </div>
-                  <p className="text-gray-600 text-sm mb-4">{car.description}</p>
-                  <div className="bg-gray-50 rounded-lg p-3 mb-4">
-                    <p className="text-xs text-gray-600">📍 {car.mileage.toLocaleString()} miles</p>
-                  </div>
+    <!-- Footer CTA -->
+    <section class="footer-cta">
+        <div class="container">
+            <h2>Have Questions?</h2>
+            <p>Call us now for instant answers or chat with our sales team</p>
+            <div class="footer-buttons">
+                <button class="btn-primary" onclick="alert('Call: (305) 555-CARS')">📞 (305) 555-CARS</button>
+                <button class="btn-secondary" onclick="alert('Live chat coming soon!')">💬 Live Chat</button>
+            </div>
+        </div>
+    </section>
 
-                  {/* CTA BUTTONS */}
-                  <div className="flex gap-3">
-                    <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-bold transition">
-                      View Details
-                    </button>
-                    <button className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 rounded-lg font-bold transition">
-                      Test Drive
-                    </button>
-                  </div>
+    <script>
+        // Vehicle Data
+        const vehicles = [
+            {
+                id: 1,
+                year: 2022,
+                make: 'Honda',
+                model: 'Civic',
+                price: 18995,
+                mileage: 42000,
+                emoji: '🚗',
+                type: 'Sedan',
+                badge: 'Certified Pre-Owned'
+            },
+            {
+                id: 2,
+                year: 2021,
+                make: 'Toyota',
+                model: 'RAV4',
+                price: 22500,
+                mileage: 58000,
+                emoji: '🚙',
+                type: 'SUV',
+                badge: 'Low Mileage'
+            },
+            {
+                id: 3,
+                year: 2023,
+                make: 'Ford',
+                model: 'F-150',
+                price: 28995,
+                mileage: 35000,
+                emoji: '🚛',
+                type: 'Truck',
+                badge: 'Warranty'
+            },
+            {
+                id: 4,
+                year: 2020,
+                make: 'Hyundai',
+                model: 'Elantra',
+                price: 15495,
+                mileage: 68000,
+                emoji: '🚗',
+                type: 'Sedan',
+                badge: 'Great Price'
+            },
+            {
+                id: 5,
+                year: 2022,
+                make: 'Chevrolet',
+                model: 'Malibu',
+                price: 19999,
+                mileage: 51000,
+                emoji: '🚗',
+                type: 'Sedan',
+                badge: 'Certified'
+            },
+            {
+                id: 6,
+                year: 2021,
+                make: 'Nissan',
+                model: 'Altima',
+                price: 17995,
+                mileage: 62000,
+                emoji: '🚗',
+                type: 'Sedan',
+                badge: 'Reliable'
+            }
+        ];
+
+        let currentFormType = 'contact';
+
+        // Initialize
+        function init() {
+            renderVehicles(vehicles);
+        }
+
+        // Render vehicles
+        function renderVehicles(vehicleList) {
+            const grid = document.getElementById('vehicleGrid');
+            grid.innerHTML = vehicleList.map(v => `
+                <div class="vehicle-card">
+                    <div class="vehicle-image">
+                        ${v.emoji}
+                        <div class="vehicle-badge">${v.badge}</div>
+                    </div>
+                    <div class="vehicle-details">
+                        <h3>${v.year} ${v.make} ${v.model}</h3>
+                        <div class="vehicle-specs">${v.type} • ${v.mileage.toLocaleString()} miles</div>
+                        <div class="vehicle-footer">
+                            <span class="vehicle-price">$${v.price.toLocaleString()}</span>
+                            <button class="btn-interest" onclick="scrollToForm()">Interest</button>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            ))}
-          </div>
+            `).join('');
+        }
 
-          {filteredCars.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-600 text-lg">No cars match your filters. Adjust and try again!</p>
-            </div>
-          )}
-        </div>
-      </section>
+        // Filter vehicles
+        function filterVehicles() {
+            const priceMin = parseInt(document.getElementById('priceMin').value) || 0;
+            const priceMax = parseInt(document.getElementById('priceMax').value) || 999999;
+            const make = document.getElementById('make').value.toLowerCase();
+            const model = document.getElementById('model').value.toLowerCase();
+            const mileage = parseInt(document.getElementById('mileage').value) || 999999;
 
-      {/* ===== LEAD CAPTURE FORM ===== */}
-      <section id="forms" className="py-16 px-4 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-4xl font-bold mb-4 text-center">Get Pre-Approved in 60 Seconds</h2>
-          <p className="text-blue-100 text-center mb-8">
-            Bad credit? No problem! We work with all credit types.
-          </p>
+            const filtered = vehicles.filter(v => 
+                v.price >= priceMin && 
+                v.price <= priceMax && 
+                (make === '' || v.make.toLowerCase().includes(make)) &&
+                (model === '' || v.model.toLowerCase().includes(model)) &&
+                v.mileage <= mileage
+            );
 
-          <form onSubmit={handleSubmit} className="bg-white rounded-lg p-8 shadow-2xl text-gray-800">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <input
-                type="text"
-                placeholder="Your Name"
-                value={formData.name}
-                onChange={(e) => setFormData({...formData, name: e.target.value})}
-                className="px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:outline-none"
-                required
-              />
-              <input
-                type="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={(e) => setFormData({...formData, email: e.target.value})}
-                className="px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:outline-none"
-                required
-              />
-            </div>
+            renderVehicles(filtered.length > 0 ? filtered : vehicles);
+        }
 
-            <input
-              type="tel"
-              placeholder="Phone (we'll call/text you)"
-              value={formData.phone}
-              onChange={(e) => setFormData({...formData, phone: e.target.value})}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:outline-none mb-4"
-              required
-            />
+        // Switch form type
+        function switchForm(type) {
+            currentFormType = type;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
 
-            <select
-              value={formData.interestedCar}
-              onChange={(e) => setFormData({...formData, interestedCar: e.target.value})}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-600 focus:outline-none mb-6"
-            >
-              <option value="">Interested in any particular car?</option>
-              {inventory.map(car => (
-                <option key={car.id} value={`${car.year} ${car.make} ${car.model}`}>
-                  {car.year} {car.make} {car.model} - ${car.price.toLocaleString()}
-                </option>
-              ))}
-            </select>
+        // Scroll to form
+        function scrollToForm() {
+            document.getElementById('leadForm').scrollIntoView({ behavior: 'smooth' });
+        }
 
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white py-4 rounded-lg font-bold text-lg transition"
-            >
-              Get Pre-Approved Now
-            </button>
-            <p className="text-gray-600 text-xs mt-4 text-center">
-              ✓ No credit card required • ✓ Instant decision • ✓ Your info is secure
-            </p>
-          </form>
-        </div>
-      </section>
+        // Handle form submission
+        function handleSubmit(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
 
-      {/* ===== TESTIMONIALS ===== */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12">What Our Customers Say</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { name: 'John D.', text: 'Found my perfect car in 20 minutes. Best experience ever!', rating: '⭐⭐⭐⭐⭐' },
-              { name: 'Maria L.', text: 'Got approved instantly. No hassle, great prices!', rating: '⭐⭐⭐⭐⭐' },
-              { name: 'David T.', text: 'Amazing customer service. Highly recommend!', rating: '⭐⭐⭐⭐⭐' },
-            ].map((review, idx) => (
-              <div key={idx} className="bg-gray-50 p-6 rounded-lg border-l-4 border-blue-600">
-                <p className="text-gray-800 mb-4">"{review.text}"</p>
-                <p className="font-bold text-gray-800 mb-2">{review.name}</p>
-                <p className="text-lg">{review.rating}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            // Show success message
+            const successMsg = document.getElementById('successMsg');
+            successMsg.classList.add('show');
 
-      {/* ===== FOOTER ===== */}
-      <footer className="bg-gray-900 text-white py-12 px-4">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-            <h3 className="font-bold text-lg mb-4">AUTODEALZ</h3>
-            <p className="text-gray-400 text-sm">Your trusted used car dealer in Miami.</p>
-          </div>
-          <div>
-            <h4 className="font-bold mb-4">Quick Links</h4>
-            <ul className="text-gray-400 text-sm space-y-2">
-              <li><a href="#inventory" className="hover:text-white">Inventory</a></li>
-              <li><a href="#forms" className="hover:text-white">Get Approved</a></li>
-              <li><a href="#" className="hover:text-white">About Us</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-bold mb-4">Contact</h4>
-            <div className="text-gray-400 text-sm space-y-2">
-              <p className="flex items-center gap-2"><Phone size={16} /> (305) 555-CARS</p>
-              <p className="flex items-center gap-2"><Mail size={16} /> info@autodealz.net</p>
-              <p className="flex items-center gap-2"><MapPin size={16} /> 123 Auto Way, Miami, FL</p>
-            </div>
-          </div>
-          <div>
-            <h4 className="font-bold mb-4">Hours</h4>
-            <p className="text-gray-400 text-sm">Mon-Sat: 9am-8pm</p>
-            <p className="text-gray-400 text-sm">Sun: 11am-6pm</p>
-            <p className="text-gray-400 text-sm">24/7 Online</p>
-          </div>
-        </div>
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
-          <p>&copy; 2024 Autodealz.net • Privacy Policy • Terms of Service</p>
-        </div>
-      </footer>
-    </div>
-  );
-};
+            // Reset form
+            e.target.reset();
 
-export default AutodealzWebsite;
+            // Hide message after 3 seconds
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+
+            // In production, send to Zapier/email service
+            console.log('Lead submitted:', { name, phone, email, type: currentFormType });
+        }
+
+        // Initialize on load
+        window.onload = init;
+    </script>
+</body>
+</html>
