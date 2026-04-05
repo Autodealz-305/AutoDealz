@@ -184,27 +184,27 @@
         }
 
         .vehicle-image {
-            background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 100%);
-            padding: 40px;
-            font-size: 80px;
-            text-align: center;
             position: relative;
             height: 200px;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 100%);
         }
 
         .vehicle-badge {
             position: absolute;
             top: 10px;
             right: 10px;
-            background: #ff6b35;
+            background: rgba(255, 107, 53, 0.95);
             color: white;
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 500;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .vehicle-details {
@@ -420,22 +420,20 @@
 
     <!-- Trust Signals -->
     <section class="trust-section">
-        <div class="container" style="display: contents;">
-            <div class="trust-item">
-                <div class="icon">🛡️</div>
-                <h3>100% Verified Inspection</h3>
-                <p>Every vehicle thoroughly checked by certified mechanics</p>
-            </div>
-            <div class="trust-item">
-                <div class="icon">⚡</div>
-                <h3>Fast Approval</h3>
-                <p>Get instant financing quotes even with bad credit</p>
-            </div>
-            <div class="trust-item">
-                <div class="icon">🕐</div>
-                <h3>Same Day Delivery</h3>
-                <p>Drive your new car home the same day you buy</p>
-            </div>
+        <div class="trust-item">
+            <div class="icon">🛡️</div>
+            <h3>100% Verified Inspection</h3>
+            <p>Every vehicle thoroughly checked by certified mechanics</p>
+        </div>
+        <div class="trust-item">
+            <div class="icon">⚡</div>
+            <h3>Fast Approval</h3>
+            <p>Get instant financing quotes even with bad credit</p>
+        </div>
+        <div class="trust-item">
+            <div class="icon">🕐</div>
+            <h3>Same Day Delivery</h3>
+            <p>Drive your new car home the same day you buy</p>
         </div>
     </section>
 
@@ -509,7 +507,9 @@
                 mileage: 61677,
                 image: 'https://pictures.dealer.com/a/autonationmargatefordfd/1649/0d269b64661fc610cbfb711c7ba61cacx.jpg',
                 type: 'SUV',
-                badge: 'Certified Pre-Owned'
+                badge: 'Certified Pre-Owned',
+                dealer: 'AutoNation Ford Margate',
+                dealerUrl: 'https://www.autonationfordmargate.com'
             },
             {
                 id: 2,
@@ -520,7 +520,9 @@
                 mileage: 58000,
                 emoji: '🚙',
                 type: 'SUV',
-                badge: 'Low Mileage'
+                badge: 'Low Mileage',
+                dealer: 'Local Dealer',
+                dealerUrl: '#'
             },
             {
                 id: 3,
@@ -531,7 +533,9 @@
                 mileage: 35000,
                 emoji: '🚛',
                 type: 'Truck',
-                badge: 'Warranty'
+                badge: 'Warranty',
+                dealer: 'Local Dealer',
+                dealerUrl: '#'
             },
             {
                 id: 4,
@@ -542,7 +546,9 @@
                 mileage: 68000,
                 emoji: '🚗',
                 type: 'Sedan',
-                badge: 'Great Price'
+                badge: 'Great Price',
+                dealer: 'Local Dealer',
+                dealerUrl: '#'
             },
             {
                 id: 5,
@@ -553,7 +559,9 @@
                 mileage: 51000,
                 emoji: '🚗',
                 type: 'Sedan',
-                badge: 'Certified'
+                badge: 'Certified',
+                dealer: 'Local Dealer',
+                dealerUrl: '#'
             },
             {
                 id: 6,
@@ -564,34 +572,10 @@
                 mileage: 62000,
                 emoji: '🚗',
                 type: 'Sedan',
-                badge: 'Reliable'
-            },
-            {
-    id: 7,
-    year: 2021,
-    make: 'Toyota',
-    model: 'Camry',
-    price: 21995,
-    mileage: 45000,
-    image: 'https://pictures.dealer.com/image-url-here.jpg',
-    type: 'Sedan',
-    badge: 'Low Mileage',
-    dealer: 'AutoNation Toyota',
-    dealerUrl: 'https://www.autonationtoyota.com/used-cars/...'
-},
-            {
-    id: 8,
-    year: 2019,
-    make: 'Mercedes-Benz',
-    model: 'AMG G 63',
-    price: 119695,
-    mileage: 61677,
-    image: 'https://pictures.dealer.com/a/autonationmargatefordfd/1318/5751a8a977a3a936280e995686839d2ex.jpg?impolicy=resize&w=400',
-    type: 'SUV',
-    badge: 'Luxury',
-    dealer: 'AutoNation Ford Margate',
-    dealerUrl: 'https://www.autonationfordmargate.com/used/Mercedes-Benz/2019-Mercedes-Benz-AMG-G-63-c4167db0ac1837f53f8606c6c0165ebd.htm'
-},
+                badge: 'Reliable',
+                dealer: 'Local Dealer',
+                dealerUrl: '#'
+            }
         ];
 
         let currentFormType = 'contact';
@@ -606,8 +590,8 @@
             const grid = document.getElementById('vehicleGrid');
             grid.innerHTML = vehicleList.map(v => `
                 <div class="vehicle-card">
-                    <div class="vehicle-image">
-                        ${v.emoji}
+                    <div class="vehicle-image" style="${v.image ? `background-image: url('${v.image}'); background-size: cover; background-position: center;` : ''}">
+                        ${!v.image ? (v.emoji || '🚗') : ''}
                         <div class="vehicle-badge">${v.badge}</div>
                     </div>
                     <div class="vehicle-details">
@@ -617,6 +601,7 @@
                             <span class="vehicle-price">$${v.price.toLocaleString()}</span>
                             <button class="btn-interest" onclick="scrollToForm()">Interest</button>
                         </div>
+                        ${v.dealerUrl && v.dealerUrl !== '#' ? `<a href="${v.dealerUrl}" target="_blank" style="display: inline-block; margin-top: 12px; color: #ff6b35; text-decoration: none; font-size: 13px; font-weight: 500;">View Full Listing →</a>` : ''}
                     </div>
                 </div>
             `).join('');
