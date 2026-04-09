@@ -603,6 +603,45 @@
             transform: translateY(-2px);
         }
 
+        .form-group textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+            resize: vertical;
+            min-height: 90px;
+            font-family: inherit;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0066CC;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .form-group select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+            background: white;
+            cursor: pointer;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: #0066CC;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .form-submit:disabled {
+            background: #6b7280;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .success-message {
             margin-top: 15px;
             color: #10b981;
@@ -615,6 +654,21 @@
         }
 
         .success-message.show {
+            display: block;
+        }
+
+        .error-message {
+            margin-top: 15px;
+            color: #dc2626;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+            background: #fee2e2;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        .error-message.show {
             display: block;
         }
 
