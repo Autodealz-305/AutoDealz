@@ -662,6 +662,143 @@
             display: block;
         }
 
+        /* ========== FORM PANELS (tab-driven) ========== */
+        .form-panel { display: none; }
+        .form-panel.active { display: block; }
+
+        input[type="date"], input[type="email"], input[type="tel"],
+        .form-group select, .form-group textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+            background: white;
+            font-family: inherit;
+            width: 100%;
+        }
+
+        input[type="date"]:focus, input[type="email"]:focus, input[type="tel"]:focus,
+        .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #0066CC;
+            box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
+        }
+
+        .form-group textarea { resize: vertical; min-height: 80px; }
+
+        /* ========== VEHICLE INTEREST MODAL ========== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.65);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.open { display: flex; }
+
+        .modal-box {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 560px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 35px;
+            position: relative;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+            animation: modalIn 0.2s ease;
+        }
+
+        @keyframes modalIn {
+            from { transform: scale(0.92) translateY(20px); opacity: 0; }
+            to   { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 18px;
+            background: #f3f4f6;
+            border: none;
+            font-size: 18px;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            color: #555;
+            transition: background 0.15s;
+        }
+
+        .modal-close:hover { background: #e5e7eb; }
+
+        .modal-vehicle-banner {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: linear-gradient(135deg, #1a3a3a, #2d5a5a);
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 22px;
+        }
+
+        .modal-vehicle-thumb {
+            width: 90px; height: 65px;
+            border-radius: 8px;
+            background-size: cover;
+            background-position: center;
+            background-color: #0d2525;
+            flex-shrink: 0;
+        }
+
+        .modal-vehicle-title { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+        .modal-vehicle-specs { font-size: 12px; opacity: 0.8; margin-bottom: 5px; }
+        .modal-vehicle-price { font-size: 20px; font-weight: 700; color: #50C878; }
+
+        .modal-form-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            color: #1a3a3a;
+        }
+
+        .modal-form-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .modal-form-group input,
+        .modal-form-group textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+            font-family: inherit;
+            width: 100%;
+        }
+
+        .modal-form-group input:focus,
+        .modal-form-group textarea:focus {
+            outline: none;
+            border-color: #0066CC;
+            box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
+        }
+
+        .modal-form-group textarea { resize: vertical; min-height: 70px; }
+
+        /* ========== PHONE LINK ========== */
+        a.phone-link {
+            color: inherit;
+            text-decoration: none;
+        }
+
         /* ========== FOOTER CTA ========== */
         .footer-cta {
             background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 100%);
@@ -737,9 +874,9 @@
             <span class="sticky-header-stat">🚀 24HR Response</span>
         </div>
         <div class="sticky-header-right">
-            <button class="sticky-btn" onclick="alert('Call: (305) 767-6648')">
+            <a href="tel:3057676648" class="sticky-btn phone-link">
                 ☎️ (305) 767-6648
-            </button>
+            </a>
             <button class="sticky-btn sticky-btn-secondary" onclick="document.getElementById('leadForm').scrollIntoView({ behavior: 'smooth' })">
                 💬 Chat Now
             </button>
@@ -861,55 +998,114 @@
             <p>Choose how you want to connect with us</p>
 
             <div class="form-tabs">
-                <button class="tab-btn active" onclick="switchForm('contact')">📞 Quick Contact</button>
-                <button class="tab-btn" onclick="switchForm('quote')">💰 Get Price Quote</button>
-                <button class="tab-btn" onclick="switchForm('tradeIn')">🔄 Trade-In Value</button>
-                <button class="tab-btn" onclick="switchForm('appointment')">📅 Book Test Drive</button>
+                <button class="tab-btn active" onclick="switchForm('contact', this)">📞 Quick Contact</button>
+                <button class="tab-btn" onclick="switchForm('quote', this)">💰 Get Price Quote</button>
+                <button class="tab-btn" onclick="switchForm('tradeIn', this)">🔄 Trade-In Value</button>
+                <button class="tab-btn" onclick="switchForm('appointment', this)">📅 Book Test Drive</button>
             </div>
 
-            <!--
-            ============================================================
-            ZAPIER SETUP INSTRUCTIONS
-            ============================================================
-            1. Go to zapier.com → Create Zap
-            2. TRIGGER: "Webhooks by Zapier" → "Catch Hook" → copy the webhook URL
-            3. Paste that URL into ZAPIER_WEBHOOK_URL below in the <script>
-            4. ACTION 1: Airtable → "Create Record"
-               - Base: your AutoDealz base
-               - Table: Leads
-               - Map fields: name, phone, email, interest_type, vehicle_interest, message, submitted_at
-            5. ACTION 2: Zoho Mail → "Send Email"
-               - To: your@zohomail.com
-               - Subject: "New AutoDealz Lead - {{name}}"
-               - Body: include all the fields for a quick notification
-            6. Turn on the Zap → done!
-            ============================================================
-            -->
-            <form class="lead-form" id="contactForm" onsubmit="handleSubmit(event)">
-                <div class="form-group">
-                    <input type="text" id="name" placeholder="Full Name *" required>
-                    <input type="tel" id="phone" placeholder="Phone Number *" required>
-                    <input type="email" id="email" placeholder="Email Address *" required>
-                </div>
-                <div class="form-group">
-                    <select id="interestType">
-                        <option value="">What can we help you with?</option>
-                        <option value="Buy a Car">Buy a Car</option>
-                        <option value="Get Price Quote">Get Price Quote</option>
-                        <option value="Trade-In Value">Trade-In Value</option>
-                        <option value="Book Test Drive">Book Test Drive</option>
-                        <option value="Financing Info">Financing Info</option>
-                        <option value="General Inquiry">General Inquiry</option>
-                    </select>
-                    <input type="text" id="vehicleInterest" placeholder="Vehicle of Interest (e.g. 2020 Honda Accord)">
-                </div>
-                <div class="form-group" style="grid-template-columns: 1fr;">
-                    <textarea id="message" placeholder="Any additional details or questions..."></textarea>
-                </div>
-                <button type="submit" class="form-submit" id="submitBtn">Send My Information</button>
-                <div class="success-message" id="successMsg">✓ Got it! We'll contact you within 1 hour.</div>
-                <div class="error-message" id="errorMsg">⚠ Something went wrong. Please call us at (305) 767-6648.</div>
-            </form>
+            <!-- PANEL: Quick Contact -->
+            <div id="panel-contact" class="form-panel active">
+                <form class="lead-form" onsubmit="handleSubmit(event, 'Quick Contact')">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Full Name *" required>
+                        <input type="tel" name="phone" placeholder="Phone Number *" required>
+                        <input type="email" name="email" placeholder="Email Address *" required>
+                    </div>
+                    <div class="form-group" style="grid-template-columns:1fr;">
+                        <textarea name="message" placeholder="How can we help you?"></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">Send Message</button>
+                    <div class="success-message">✓ Got it! We'll contact you within 1 hour.</div>
+                    <div class="error-message">⚠ Something went wrong. Please call <a href="tel:3057676648" style="color:#dc2626;">(305) 767-6648</a>.</div>
+                </form>
+            </div>
+
+            <!-- PANEL: Get Price Quote -->
+            <div id="panel-quote" class="form-panel">
+                <form class="lead-form" onsubmit="handleSubmit(event, 'Price Quote')">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Full Name *" required>
+                        <input type="tel" name="phone" placeholder="Phone Number *" required>
+                        <input type="email" name="email" placeholder="Email Address *" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="vehicle_interest" placeholder="Vehicle of Interest (Year, Make, Model)">
+                        <input type="number" name="budget" placeholder="Your Budget ($)">
+                    </div>
+                    <div class="form-group" style="grid-template-columns:1fr;">
+                        <textarea name="message" placeholder="Any specific features or requirements?"></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">Get My Quote</button>
+                    <div class="success-message">✓ Quote request sent! We'll get back to you within 1 hour.</div>
+                    <div class="error-message">⚠ Something went wrong. Please call <a href="tel:3057676648" style="color:#dc2626;">(305) 767-6648</a>.</div>
+                </form>
+            </div>
+
+            <!-- PANEL: Trade-In Value -->
+            <div id="panel-tradeIn" class="form-panel">
+                <form class="lead-form" onsubmit="handleSubmit(event, 'Trade-In Value')">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Full Name *" required>
+                        <input type="tel" name="phone" placeholder="Phone Number *" required>
+                        <input type="email" name="email" placeholder="Email Address *" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="trade_year" placeholder="Trade-In Year">
+                        <input type="text" name="trade_make" placeholder="Trade-In Make">
+                        <input type="text" name="trade_model" placeholder="Trade-In Model">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="trade_mileage" placeholder="Mileage">
+                        <select name="trade_condition">
+                            <option value="">Vehicle Condition</option>
+                            <option>Excellent</option>
+                            <option>Good</option>
+                            <option>Fair</option>
+                            <option>Poor</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="grid-template-columns:1fr;">
+                        <input type="text" name="vin" placeholder="VIN Number (optional — helps us give you a more accurate value)" maxlength="17" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+                    </div>
+                    <div class="form-group" style="grid-template-columns:1fr;">
+                        <textarea name="message" placeholder="Any additional details about your vehicle?"></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">Get Trade-In Value</button>
+                    <div class="success-message">✓ Request sent! We'll evaluate your trade-in within 1 hour.</div>
+                    <div class="error-message">⚠ Something went wrong. Please call <a href="tel:3057676648" style="color:#dc2626;">(305) 767-6648</a>.</div>
+                </form>
+            </div>
+
+            <!-- PANEL: Book Test Drive -->
+            <div id="panel-appointment" class="form-panel">
+                <form class="lead-form" onsubmit="handleSubmit(event, 'Book Test Drive')">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Full Name *" required>
+                        <input type="tel" name="phone" placeholder="Phone Number *" required>
+                        <input type="email" name="email" placeholder="Email Address *" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="vehicle_interest" placeholder="Vehicle to Test Drive">
+                        <input type="date" name="preferred_date" id="testDriveDate">
+                        <select name="preferred_time">
+                            <option value="">Preferred Time</option>
+                            <option>9:00 AM</option>
+                            <option>10:00 AM</option>
+                            <option>11:00 AM</option>
+                            <option>12:00 PM</option>
+                            <option>1:00 PM</option>
+                            <option>2:00 PM</option>
+                            <option>3:00 PM</option>
+                            <option>4:00 PM</option>
+                            <option>5:00 PM</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="form-submit">📅 Book My Test Drive</button>
+                    <div class="success-message">✓ Test drive booked! We'll confirm your appointment shortly.</div>
+                    <div class="error-message">⚠ Something went wrong. Please call <a href="tel:3057676648" style="color:#dc2626;">(305) 767-6648</a>.</div>
+                </form>
+            </div>
         </div>
     </section>
 
@@ -919,15 +1115,45 @@
             <h2>Still Have Questions?</h2>
             <p>Our sales team is ready to help. Call now for instant answers or chat with us live.</p>
             <div class="footer-buttons">
-                <button class="btn-primary" onclick="alert('Call: (305) 767-6648')">
+                <a href="tel:3057676648" class="btn-primary phone-link" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
                     ☎️ Call (305) 767-6648
-                </button>
+                </a>
                 <button class="btn-secondary" onclick="document.getElementById('leadForm').scrollIntoView({ behavior: 'smooth' })">
                     💬 Start Chat
                 </button>
             </div>
         </div>
     </section>
+
+    <!-- Vehicle Interest Modal -->
+    <div id="vehicleModal" class="modal-overlay" onclick="closeModalOnOverlay(event)">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeVehicleModal()">✕</button>
+            <div class="modal-vehicle-banner">
+                <div class="modal-vehicle-thumb" id="modalThumb"></div>
+                <div>
+                    <div class="modal-vehicle-title" id="modalTitle"></div>
+                    <div class="modal-vehicle-specs" id="modalSpecs"></div>
+                    <div class="modal-vehicle-price" id="modalPrice"></div>
+                </div>
+            </div>
+            <h3 class="modal-form-title">I'm Interested — Contact Me!</h3>
+            <form onsubmit="handleModalSubmit(event)">
+                <input type="hidden" id="modalVehicleField">
+                <div class="modal-form-group">
+                    <input type="text" id="modalName" placeholder="Full Name *" required>
+                    <input type="tel" id="modalPhone" placeholder="Phone Number *" required>
+                    <input type="email" id="modalEmail" placeholder="Email Address *" required>
+                </div>
+                <div class="modal-form-group" style="grid-template-columns:1fr;">
+                    <textarea id="modalMessage" placeholder="Any questions about this vehicle?"></textarea>
+                </div>
+                <button type="submit" class="form-submit" id="modalSubmitBtn">Send My Interest</button>
+                <div class="success-message" id="modalSuccess">✓ We'll contact you about this vehicle within 1 hour!</div>
+                <div class="error-message" id="modalError">⚠ Something went wrong. Please call <a href="tel:3057676648" style="color:#dc2626;">(305) 767-6648</a>.</div>
+            </form>
+        </div>
+    </div>
 
     <script>
         // Vehicle Data
@@ -1042,19 +1268,26 @@
             }
         ];
 
-        let currentFormType = 'contact';
+        // ============================================================
+        // PASTE YOUR ZAPIER WEBHOOK URL HERE
+        // Get it from: Zapier → New Zap → Webhooks by Zapier → Catch Hook
+        // ============================================================
+        const ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/27097277/u7i6dcx/';
 
-        // Initialize
+        // ── Init ──────────────────────────────────────────────────────
         function init() {
             renderVehicles(vehicles);
+            // Set min date for test drive calendar to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('testDriveDate').min = today;
         }
 
-        // Render vehicles
+        // ── Render vehicle cards ──────────────────────────────────────
         function renderVehicles(vehicleList) {
             const grid = document.getElementById('vehicleGrid');
             grid.innerHTML = vehicleList.map(v => `
                 <div class="vehicle-card">
-                    <div class="vehicle-image" style="${v.image ? `background-image: url('${v.image}'); background-size: cover; background-position: center;` : ''}">
+                    <div class="vehicle-image" style="${v.image ? `background-image:url('${v.image}');background-size:cover;background-position:center;` : ''}">
                         ${!v.image ? (v.emoji || '🚗') : ''}
                         <div class="vehicle-badge">${v.badge}</div>
                         ${v.urgency ? `<div class="vehicle-urgency">${v.urgency}</div>` : ''}
@@ -1064,98 +1297,149 @@
                         <div class="vehicle-specs">${v.type} • ${v.mileage.toLocaleString()} miles</div>
                         <div class="vehicle-footer">
                             <span class="vehicle-price">$${v.price.toLocaleString()}</span>
-                            <button class="btn-interest" onclick="scrollToForm()">Interested</button>
+                            <button class="btn-interest" onclick="openVehicleModal(${v.id})">Interested</button>
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        // Filter vehicles
+        // ── Filter vehicles ───────────────────────────────────────────
         function filterVehicles() {
             const priceMin = parseInt(document.getElementById('priceMin').value) || 0;
             const priceMax = parseInt(document.getElementById('priceMax').value) || 999999;
             const make = document.getElementById('make').value.toLowerCase();
             const model = document.getElementById('model').value.toLowerCase();
             const mileage = parseInt(document.getElementById('mileage').value) || 999999;
-
-            const filtered = vehicles.filter(v => 
-                v.price >= priceMin && 
-                v.price <= priceMax && 
+            const filtered = vehicles.filter(v =>
+                v.price >= priceMin && v.price <= priceMax &&
                 (make === '' || v.make.toLowerCase().includes(make)) &&
                 (model === '' || v.model.toLowerCase().includes(model)) &&
                 v.mileage <= mileage
             );
-
             renderVehicles(filtered.length > 0 ? filtered : vehicles);
         }
 
-        // Switch form type
-        function switchForm(type) {
-            currentFormType = type;
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+        // ── Tab switching ─────────────────────────────────────────────
+        function switchForm(type, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('panel-' + type).classList.add('active');
         }
 
-        // Scroll to form
-        function scrollToForm() {
-            document.getElementById('leadForm').scrollIntoView({ behavior: 'smooth' });
+        // ── Vehicle Interest Modal ────────────────────────────────────
+        function openVehicleModal(vehicleId) {
+            const v = vehicles.find(v => v.id === vehicleId);
+            if (!v) return;
+            document.getElementById('modalThumb').style.backgroundImage = v.image ? `url('${v.image}')` : '';
+            document.getElementById('modalTitle').textContent = `${v.year} ${v.make} ${v.model}`;
+            document.getElementById('modalSpecs').textContent = `${v.type} • ${v.mileage.toLocaleString()} miles`;
+            document.getElementById('modalPrice').textContent = `$${v.price.toLocaleString()}`;
+            document.getElementById('modalVehicleField').value = `${v.year} ${v.make} ${v.model} — $${v.price.toLocaleString()}`;
+            // Clear previous state
+            document.getElementById('modalSuccess').classList.remove('show');
+            document.getElementById('modalError').classList.remove('show');
+            document.querySelector('#vehicleModal form').reset();
+            document.getElementById('vehicleModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
         }
 
-        // ============================================================
-        // PASTE YOUR ZAPIER WEBHOOK URL HERE
-        // Get it from: Zapier → New Zap → Webhooks by Zapier → Catch Hook
-        // ============================================================
-        const ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/27097277/u7i6dcx/';
+        function closeVehicleModal() {
+            document.getElementById('vehicleModal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
 
-        // Handle form submission → sends to Zapier → Airtable + Zoho Mail
-        async function handleSubmit(e) {
+        function closeModalOnOverlay(e) {
+            if (e.target === document.getElementById('vehicleModal')) closeVehicleModal();
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeVehicleModal();
+        });
+
+        // ── Generic form submit → Zapier ──────────────────────────────
+        async function handleSubmit(e, formType) {
             e.preventDefault();
+            const form = e.target;
+            const btn = form.querySelector('[type="submit"]');
+            const successEl = form.querySelector('.success-message');
+            const errorEl = form.querySelector('.error-message');
+            successEl.classList.remove('show');
+            errorEl.classList.remove('show');
 
-            const submitBtn = document.getElementById('submitBtn');
-            const successMsg = document.getElementById('successMsg');
-            const errorMsg = document.getElementById('errorMsg');
-
-            successMsg.classList.remove('show');
-            errorMsg.classList.remove('show');
-
+            const data = Object.fromEntries(new FormData(form));
             const payload = {
-                name: document.getElementById('name').value.trim(),
-                phone: document.getElementById('phone').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                interest_type: document.getElementById('interestType').value || currentFormType,
-                vehicle_interest: document.getElementById('vehicleInterest').value.trim(),
-                message: document.getElementById('message').value.trim(),
+                ...data,
+                interest_type: formType,
                 submitted_at: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }),
                 source: 'AutoDealz Website'
             };
 
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Sending...';
+            const origText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
 
             try {
                 await fetch(ZAPIER_WEBHOOK_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
-                    mode: 'no-cors' // Zapier webhooks don't return CORS headers
+                    mode: 'no-cors'
                 });
-
-                // no-cors means we can't read the response — assume success if no exception
-                successMsg.classList.add('show');
-                e.target.reset();
-                setTimeout(() => successMsg.classList.remove('show'), 5000);
+                successEl.classList.add('show');
+                form.reset();
+                setTimeout(() => successEl.classList.remove('show'), 5000);
             } catch (err) {
-                console.error('Submission error:', err);
-                errorMsg.classList.add('show');
-                setTimeout(() => errorMsg.classList.remove('show'), 8000);
+                errorEl.classList.add('show');
+                setTimeout(() => errorEl.classList.remove('show'), 8000);
             } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Send My Information';
+                btn.disabled = false;
+                btn.textContent = origText;
             }
         }
 
-        // Initialize on load
+        // ── Modal form submit ─────────────────────────────────────────
+        async function handleModalSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('modalSubmitBtn');
+            const successEl = document.getElementById('modalSuccess');
+            const errorEl = document.getElementById('modalError');
+            successEl.classList.remove('show');
+            errorEl.classList.remove('show');
+
+            const payload = {
+                name: document.getElementById('modalName').value.trim(),
+                phone: document.getElementById('modalPhone').value.trim(),
+                email: document.getElementById('modalEmail').value.trim(),
+                vehicle_interest: document.getElementById('modalVehicleField').value,
+                message: document.getElementById('modalMessage').value.trim(),
+                interest_type: 'Vehicle Interest',
+                submitted_at: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }),
+                source: 'AutoDealz Website — Vehicle Card'
+            };
+
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+
+            try {
+                await fetch(ZAPIER_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    mode: 'no-cors'
+                });
+                successEl.classList.add('show');
+                e.target.reset();
+                setTimeout(closeVehicleModal, 3000);
+            } catch (err) {
+                errorEl.classList.add('show');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Send My Interest';
+            }
+        }
+
         window.onload = init;
     </script>
 </body>
